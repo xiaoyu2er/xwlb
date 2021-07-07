@@ -178,15 +178,15 @@ function toFile(date, result, cb) {
     .map((r) => {
       return `## ${r.title}\n\n${r.markdown}\n
 *[原文](${r.href})*
-
-更新于 ${formatDate3(new Date())}
 `;
     })
     .join("\n");
 
   //   const { year, month, day } = parseDate(date);
   const dateStr = formatDate(date);
-  const content = `# 新闻联播 ${dateStr}\n\n${main}\n`;
+  const content = `# 新闻联播 ${dateStr}\n\n${main}\n
+更新于 ${formatDate3(new Date())}
+  `;
 
   return new Promise((resolve) => {
     fs.writeFile(`./news/${dateStr}.md`, content, (err) => {

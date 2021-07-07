@@ -11,9 +11,19 @@ jobs:
     if: "!contains(github.event.commits[0].message, '[auto]')"
     runs-on: ubuntu-latest
     steps:
+      - name: Set timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "Asia/Singapore"
+          timezoneMacos: "Asia/Singapore"
+          timezoneWindows: "Singapore Standard Time"
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Test with environment variables
+        run: echo current date - $DATE
+        env:
+          DATE: ${{ steps.date.outputs.date }}
       - name: Checkout
         uses: actions/checkout@v2
         with:
