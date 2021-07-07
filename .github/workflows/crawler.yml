@@ -1,0 +1,30 @@
+name: GitHub Actions Demo
+on: 
+  [push]
+jobs:
+  UpdateNews:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Update today 
+        run: npm run today
+      - name: Commit files
+        run: |
+         git config --local user.email "zongyanqi@foxmail.com"
+         git config --local user.name "xiaoyu2er"
+         git add .
+         git commit -m "update news"
+      - name: Push changes
+        uses:  ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.MY_GIT_TOKEN }}
+          branch: main

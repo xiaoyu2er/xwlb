@@ -221,7 +221,11 @@ if (args.length) {
   const date2 = args[1] ? new Date(args[1]) : date1;
   main(date1, date2);
 } else {
-  const date1 = new Date();
-  const date2 = new Date();
+  let date1 = new Date();
+  // 取昨天的
+  if (date1.getHours() < 22) {
+    date1 = new Date(+date1 - oneDay);
+  }
+  const date2 = new Date(+date1);
   main(date1, date2);
 }
