@@ -55,7 +55,7 @@ jobs:
         with:
           github_token: ${{ secrets.MY_GIT_TOKEN }}
           branch: master
-      - name: 'Send mail'
+      - name: Send mail
         if: steps.check_files.outputs.files_exists == 'true'
         uses: dawidd6/action-send-mail@master
         with:
@@ -66,4 +66,16 @@ jobs:
           subject: CCTV News
           to: zongyanqi@foxmail.com
           from: CCTV News<zongyanqi@foxmail.com>
-          html_body: ./news/${{ steps.date.outputs.date }}.md
+          html_body: file://news/${{ steps.date.outputs.date }}.md
+      - name: Send mail
+        if: steps.check_files.outputs.files_exists == 'false'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: CCTV News
+          to: zongyanqi@foxmail.com
+          from: CCTV News<zongyanqi@foxmail.com>
+          html_body: file://README.md
