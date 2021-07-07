@@ -1,13 +1,19 @@
-name: GitHub Actions Demo
+name: Update CCTV News
 on: 
   push:
+    branches: 
+      - master
   schedule:
     # 定时执行，Runs at 20:00 UTC every day
     - cron:  '0 20 * * *'
 jobs:
   UpdateNews:
+    if: "!contains(github.event.commits[0].message, '[auto]')"
     runs-on: ubuntu-latest
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -18,16 +24,36 @@ jobs:
           node-version: '14'
       - name: Install dependencies
         run: npm install
-      - name: Update today 
-        run: npm run today
+      - name: Update ${{ steps.date.outputs.date }} 
+        run: node index.js ${{ steps.date.outputs.date }}
+        # run: npm run today
+      - name: Check file existence
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "news/${{ steps.date.outputs.date }}.md"
       - name: Commit files
+        if: steps.check_files.outputs.files_exists == 'true'
         run: |
          git config --local user.email "zongyanqi@foxmail.com"
          git config --local user.name "xiaoyu2er"
          git add .
-         git commit -m "update news"
+         git commit -m "[auto] update ${{ steps.date.outputs.date }}"
       - name: Push changes
+        if: steps.check_files.outputs.files_exists == 'true'
         uses:  ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.MY_GIT_TOKEN }}
           branch: master
+      - name: 'Send mail'
+        if: steps.check_files.outputs.files_exists == 'true'
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: CCTV News
+          to: zongyanqi@foxmail.com
+          from: CCTV News<zongyanqi@foxmail.com>
+          html_body: ./news/${{ steps.date.outputs.date }}.md

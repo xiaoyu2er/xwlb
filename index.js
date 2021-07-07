@@ -7,6 +7,7 @@ const args = process.argv.slice(2);
 
 const date1 = +new Date(2010, 0, 1);
 const date2 = +new Date(2016, 01, 03);
+const updateReadme = require("./readme").update;
 
 const today = new Date().setHours(23, 59, 59);
 console.log("Today is", formatDate(today));
@@ -34,18 +35,35 @@ function parseDate(date) {
   const year = date.getFullYear();
   const month = ("" + (date.getMonth() + 1)).padStart(2, "0");
   const day = ("" + date.getDate()).padStart(2, "0");
+  const hours = ("" + date.getHours()).padStart(2, "0");
+  const minutes = ("" + date.getMinutes()).padStart(2, "0");
+  const seconds = ("" + date.getSeconds()).padStart(2, "0");
 
   return {
     year,
     month,
     day,
+    hours,
+    minutes,
+    seconds,
   };
 }
 
 function formatDate(date) {
   const { year, month, day } = parseDate(date);
+  return `${year}-${month}-${day}`;
+}
+
+function formatDate2(date) {
+  const { year, month, day } = parseDate(date);
   return `${year}${month}${day}`;
 }
+
+function formatDate3(date) {
+  const { year, month, day, hours, minutes, seconds } = parseDate(date);
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 function getUrl(date) {
   if (!isDate(date)) {
     date = new Date(date);
@@ -59,7 +77,7 @@ function getUrl(date) {
     return "";
   }
 
-  const str = formatDate(date);
+  const str = formatDate2(date);
 
   if (+date < date2) {
     // 暂时不解析
@@ -158,7 +176,11 @@ function getNewsDetail(date, queues) {
 function toFile(date, result, cb) {
   const main = result
     .map((r) => {
-      return `## ${r.title}\n\n${r.markdown}\n\n*[原文](${r.href})*\n`;
+      return `## ${r.title}\n\n${r.markdown}\n
+*[原文](${r.href})*
+
+更新于 ${formatDate3(new Date())}
+`;
     })
     .join("\n");
 
@@ -211,6 +233,8 @@ async function main(startDate, endDate) {
   });
 
   await Promise.all(ps);
+
+  updateReadme();
   console.log("done");
 
   //   return;
