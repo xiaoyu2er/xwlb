@@ -222,8 +222,8 @@ if (args.length) {
   main(date1, date2);
 } else {
   let date1 = new Date();
-  // 取昨天的
-  if (date1.getHours() < 22) {
+  // 八点前取昨天的
+  if (date1.getHours() < 20) {
     date1 = new Date(+date1 - oneDay);
   }
   const date2 = new Date(+date1);
