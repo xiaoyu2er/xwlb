@@ -3,6 +3,9 @@ const fs = require("fs");
 const cheerio = require("cheerio");
 const TurndownService = require("turndown");
 const turndownService = new TurndownService();
+const showdown = require("showdown");
+const converter = new showdown.Converter();
+
 const args = process.argv.slice(2);
 
 const date1 = +new Date(2010, 0, 1);
@@ -173,7 +176,7 @@ function getNewsDetail(date, queues) {
   });
 }
 
-function toFile(date, result, cb) {
+async function toFile(date, result, cb) {
   const main = result
     .map((r) => {
       return `## ${r.title}\n\n${r.markdown}\n
@@ -188,16 +191,10 @@ function toFile(date, result, cb) {
 更新于 ${formatDate3(new Date())}
   `;
 
-  return new Promise((resolve) => {
-    fs.writeFile(`./news/${dateStr}.md`, content, (err) => {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log(`news/${dateStr}.md done`);
-      }
-      resolve(err);
-    });
-  });
+  const html = converter.makeHtml(content);
+
+  fs.writeFileSync(`./news/${dateStr}.md`, content);
+  fs.writeFileSync(`./html/${dateStr}.html`, html);
 }
 
 async function main(startDate, endDate) {
