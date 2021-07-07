@@ -60,7 +60,7 @@ function getUrl(date) {
   }
 
   const str = formatDate(date);
-  
+
   if (+date < date2) {
     // 暂时不解析
     console.log(formatDate(date), "< date2", formatDate(date2));
@@ -219,5 +219,9 @@ async function main(startDate, endDate) {
 if (args.length) {
   const date1 = new Date(args[0]);
   const date2 = args[1] ? new Date(args[1]) : date1;
+  main(date1, date2);
+} else {
+  const date1 = new Date();
+  const date2 = new Date();
   main(date1, date2);
 }
