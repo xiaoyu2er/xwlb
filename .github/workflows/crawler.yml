@@ -78,4 +78,4 @@ jobs:
           subject: CCTV News
           to: zongyanqi@foxmail.com
           from: CCTV News<zongyanqi@foxmail.com>
-          html_body: file://README.md
+          html_body: file://README.html
