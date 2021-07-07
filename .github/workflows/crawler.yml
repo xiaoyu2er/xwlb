@@ -66,7 +66,7 @@ jobs:
           subject: CCTV News
           to: zongyanqi@foxmail.com
           from: CCTV News<zongyanqi@foxmail.com>
-          html_body: file://news/${{ steps.date.outputs.date }}.md
+          html_body: file://html/${{ steps.date.outputs.date }}.html
       - name: Send mail
         if: steps.check_files.outputs.files_exists == 'false'
         uses: dawidd6/action-send-mail@master
@@ -78,4 +78,4 @@ jobs:
           subject: CCTV News
           to: zongyanqi@foxmail.com
           from: CCTV News<zongyanqi@foxmail.com>
-          html_body: file://README.html
+          html_body: file://html/2021-07-07.html
