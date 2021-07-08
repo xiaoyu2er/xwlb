@@ -5,7 +5,7 @@ on:
       - master
   schedule:
     # 定时执行，Runs at 20:00 UTC every day
-    - cron:  '0 12 * * *'
+    - cron:  "0 12 * * *"
 jobs:
   UpdateNews:
     if: "!contains(github.event.commits[0].message, '[auto]')"
@@ -64,7 +64,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 新闻联播 ${{ steps.date.outputs.date }}
-          to: yanqi.zyq@antfin.com
+          to: zongyanqi@foxmail.com
           from: CCTV News<zongyanqi@foxmail.com>
           html_body: file://html/${{ steps.date.outputs.date }}.html
       - name: Send mail
@@ -76,7 +76,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 新闻联播 ${{ steps.date.outputs.date }}
-          to: yanqi.zyq@antfin.com
+          to: zongyanqi@foxmail.com
           from: CCTV News<zongyanqi@foxmail.com>
           body: 暂无新闻联播
       - name: Update Yuque
