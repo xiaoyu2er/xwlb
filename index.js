@@ -5,7 +5,7 @@ const TurndownService = require("turndown");
 const turndownService = new TurndownService();
 const showdown = require("showdown");
 const converter = new showdown.Converter();
-
+const { isDate, parseDate, formatDate, formatDate2, formatDate3 } = require("./util");
 const args = process.argv.slice(2);
 
 const date1 = +new Date(2010, 0, 1);
@@ -27,45 +27,6 @@ const options = {
   },
   maxConnections: 8,
 };
-function isDate(date) {
-  return Object.prototype.toString.call(date) == "[object Date]";
-}
-
-function parseDate(date) {
-  if (!isDate(date)) {
-    date = new Date(date);
-  }
-  const year = date.getFullYear();
-  const month = ("" + (date.getMonth() + 1)).padStart(2, "0");
-  const day = ("" + date.getDate()).padStart(2, "0");
-  const hours = ("" + date.getHours()).padStart(2, "0");
-  const minutes = ("" + date.getMinutes()).padStart(2, "0");
-  const seconds = ("" + date.getSeconds()).padStart(2, "0");
-
-  return {
-    year,
-    month,
-    day,
-    hours,
-    minutes,
-    seconds,
-  };
-}
-
-function formatDate(date) {
-  const { year, month, day } = parseDate(date);
-  return `${year}-${month}-${day}`;
-}
-
-function formatDate2(date) {
-  const { year, month, day } = parseDate(date);
-  return `${year}${month}${day}`;
-}
-
-function formatDate3(date) {
-  const { year, month, day, hours, minutes, seconds } = parseDate(date);
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
 function getUrl(date) {
   if (!isDate(date)) {
