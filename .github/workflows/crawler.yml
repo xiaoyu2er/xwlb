@@ -55,30 +55,6 @@ jobs:
         with:
           github_token: ${{ secrets.MY_GIT_TOKEN }}
           branch: master
-      - name: Send mail
-        if: steps.check_files.outputs.files_exists == 'true'
-        uses: dawidd6/action-send-mail@master
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: 新闻联播 ${{ steps.date.outputs.date }}
-          to: zongyanqi@foxmail.com
-          from: CCTV News<zongyanqi@foxmail.com>
-          html_body: file://html/${{ steps.date.outputs.date }}.html
-      - name: Send mail
-        if: steps.check_files.outputs.files_exists == 'false'
-        uses: dawidd6/action-send-mail@master
-        with:
-          server_address: smtp.qq.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: 新闻联播 ${{ steps.date.outputs.date }}
-          to: zongyanqi@foxmail.com
-          from: CCTV News<zongyanqi@foxmail.com>
-          body: 暂无新闻联播
       - name: Update Yuque
         if: steps.check_files.outputs.files_exists == 'true'
         run: node yuque.js ${{ secrets.YUQUE_TOKEN }}
