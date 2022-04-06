@@ -55,6 +55,7 @@ jobs:
         with:
           github_token: ${{ secrets.MY_GIT_TOKEN }}
           branch: master
-      - name: Update Yuque
-        if: steps.check_files.outputs.files_exists == 'true'
-        run: node yuque.js ${{ secrets.YUQUE_TOKEN }}
+      # 不需要发布到语雀了
+      # - name: Update Yuque
+      #  if: steps.check_files.outputs.files_exists == 'true'
+      #  run: node yuque.js ${{ secrets.YUQUE_TOKEN }}
