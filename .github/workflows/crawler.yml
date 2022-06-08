@@ -3,9 +3,9 @@ on:
   push:
     branches: 
       - master
-  schedule:
+  #schedule:
     # 定时执行，Runs at 20:00 UTC every day
-    - cron:  "0 12 * * *"
+    #- cron:  "0 12 * * *"
 jobs:
   UpdateNews:
     if: "!contains(github.event.commits[0].message, '[auto]')"
